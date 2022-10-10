@@ -92,9 +92,9 @@ app.all('*', (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const { statusCode = 500, message = 'sum ting wong' } = err;
-  res.status(statusCode).send(message);
-  res.send('sum ting wong!');
+  const { statusCode = 500 } = err;
+  if (!err.message) err.message = 'sum ting wong!';
+  res.status(statusCode).render('error', { err });
 });
 
 app.listen(3000, () => {
