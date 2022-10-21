@@ -15,10 +15,6 @@
             value="<%=campground.location%>" required>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="image">Add Images</label>
-          <input type="file" name="image" id="image" multiple>
-        </div>
-        <div class="mb-3">
           <label class="form-label" for="price">Campground Price</label>
           <div class="input-group">
             <span class="input-group-text" id="price-label">$</span>
@@ -30,6 +26,10 @@
           <label class="form-label" for="description">Description</label>
           <textarea class="form-control" type="text" name="campground[description]" id="description"
             required><%=campground.description%></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-label">Add more image(s)..</label>
+          <input class="form-control" type="file" id="image" multiple name="image">
         </div>
         <div class="mb-3">
           <button class="btn btn-info">Update Campground</button>
