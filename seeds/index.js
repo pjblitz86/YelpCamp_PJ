@@ -27,8 +27,11 @@ const seedDB = async () => {
       price,
       geometry: {
         type: "Point",
-        coordinates: [23.903597, 54.898521]
-      },
+        coordinates: [
+          cities[random1000].longitude,
+          cities[random1000].latitude
+        ]
+        },
       images: [
         {
           url: 'https://res.cloudinary.com/dmxvksruc/image/upload/v1666333688/YelpCamp/wj3rthw1ywahbblfpfy9.jpg',
