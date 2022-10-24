@@ -22,17 +22,9 @@ const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 
 const MongoStore = require('connect-mongo');
-const dbUrl = process.env.DB_URL;
-const localDbUrl = 'mongodb://localhost:27017/yelp-camp';
-const store = MongoStore.create({
-  mongoUrl: localDbUrl,
-  touchAfter: 24 * 60 * 60,
-  crypto: {
-    secret: 'secretstuffyo'
-  }
-});
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
 
-mongoose.connect(localDbUrl);
+mongoose.connect(dbUrl);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
@@ -50,18 +42,28 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize());
 
+const sessionSecret = process.env.SESSION_SECRET;
+
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  touchAfter: 24 * 60 * 60,
+  crypto: {
+    secret: sessionSecret
+  }
+});
+
 const sessionConfig = {
   store,
   name: 'session',
-  secret: 'secretstuffyo',
+  secret: sessionSecret,
   resave: false,
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
     // secure: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-  },
+    maxAge: 1000 * 60 * 60 * 24 * 7
+  }
 };
 app.use(session(sessionConfig));
 app.use(flash());
